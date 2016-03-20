@@ -1,0 +1,21 @@
+header{
+    height:81px;
+    line-height:81px;
+    background:url("../images/header_bg.png") repeat-x;
+}
+
+header #bs-navbar{
+    font-size:18px;
+    height:81px;
+    line-height:81px;
+    color:#858e99;
+}
+
+header #bs-navbar ul li{
+    list-style: none;
+    color:#858e99;
+}
+
+header #bs-navbar ul li a{
+    color:#127ff9;
+}

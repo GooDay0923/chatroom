@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="chatApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome YuHeng ChatRoom</title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/content-menus/ngContextMenu.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/form-elements.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/side-bar.css" />
+    <link rel="stylesheet" href="css/chat-room.css" />
+
+    <!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
+    <script src="lib/socket.io/socket.io.js"></script>
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-ui-router/angular-ui-router.min.js"></script>
+    <script src="lib/ngscrollbar/ngscrollbar.js"></script>
+    <script src="lib/content-menus/ngContextMenu.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/AuthController.js"></script>
+    <script src="js/controllers/HeaderController.js"></script>
+    <script src="js/controllers/SideBarController.js"></script>
+    <script src="js/controllers/ChatRoomController.js"></script>
+    <script src="js/services/AuthService.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/services/SocketService.js"></script>
+    <script src="js/directives/ChatRoomDirective.js"></script>
+    <script src="js/filters/ChatRoomFilter.js"></script>
+
+    <!--<script type='text/javascript' src='lib/requirejs/require.min.js' data-main='js/main.js'></script>-->
+</head>
+<body>
+
+<div ui-view></div>
+
+</body>
+</html>

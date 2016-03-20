@@ -1,0 +1,347 @@
+.panel{
+    background:#666;
+    /*width:100%;*/
+    height: 580px;
+    margin-left:-15px;
+    margin-right:15px;
+}
+
+.panel-heading{
+    border-bottom:1px solid #737b85;
+}
+
+.panel-heading .search_bar{
+    /*width:100%;*/
+    border-radius:25px;
+    -webkit-border-radius:25px;
+    -moz-border-radius:25px;
+    background:#999;
+    color:#eee;
+    border:1px solid #999;
+    height:30px;
+}
+
+.panel-heading .search_bar img{
+    float:left;
+}
+
+.panel-heading .search_bar input{
+    background:#999;
+    color:#eee;
+    border:none;
+    height:30px;
+    line-height:30px;
+    padding-left:10px;
+    float:left;
+    width:80%;
+}
+
+.panel-body{
+    padding:0px;
+}
+
+.panel-body .list-container {
+    height: 480px;
+    overflow: auto;
+}
+
+.panel-body .list {
+    width: 100%;
+    height: 100%;
+}
+
+.panel-body .chat-list-empty {
+    width:350px;
+    cursor:pointer;
+    margin-top:250px;
+    text-align:center;
+}
+
+.panel-body .chat-item {
+    width:258px;
+    cursor:pointer;
+    height:60px;
+    border-bottom:1px solid #737b85;
+    margin-left:2px;
+    padding:15px 0px 70px 15px;
+}
+
+.panel-body .active{
+    background:#888 none repeat scroll 0 0;
+}
+
+.panel-body .chat-item .avatar{
+    float:left;
+}
+
+.panel-body .chat-item .avatar img{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    overflow:hidden;
+}
+
+.panel-body .chat-item .avatar .red-point{
+    background:#f00;
+    border-radius:50%;
+    width:10px;
+    height:10px;
+    top:-50px;
+    left:45px;
+    position:relative;
+}
+
+.panel-body .chat-item .info{
+    height:55px;
+    margin-left:20px;
+    float:left;
+}
+
+.panel-body .chat-item .info .nickname{
+    font-size:20px;
+    padding-top:10px;
+    color:#fff;
+    overflow:hidden;
+    width:150px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.panel-body .chat-item .info .msg{
+    margin-top:5px;
+    color:#c9c9ce;
+    font-size:16px;
+    overflow:hidden;
+    width:150px;
+    height:20px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+
+}
+
+.chat-room{
+    height: 580px;
+    background:#ddd;
+    margin-left:-30px;
+}
+
+.chat-room .chat-title{
+    height:50px;
+    line-height:50px;
+    border-bottom:1px solid #cccccc;
+    text-align:center;
+}
+
+.chat-room .chat-title .doctor-name{
+
+}
+
+.chat-room .chat-title .display-name{
+    font-size:20px;
+    color:#3d4e46;
+}
+
+.chat-room .chat-title .patient-status{
+    margin:0 auto;
+    color:#fff;
+    width:100px;
+    border-radius:20px;
+    -webkit-border-radius:20px;
+    -moz-border-radius:20px;
+    background:#127ff9;
+    height:30px;
+    line-height:30px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+.chat-room .chat-content{
+    height:350px;
+    margin-left:-15px;
+    margin-right:-15px;
+}
+
+.chat-room .chat-content .list-container{
+    width:100%;
+    height: 350px;
+    overflow:auto;
+}
+
+.chat-room .chat-content .list{
+    width:100%;
+    height:100%;
+}
+
+.chat-room .chat-content .message-content{
+    /*position:absolute;*/
+    width:800px;
+    /*width:700px;*/
+    /*height:100%;*/
+    min-height:70px;
+    margin:8px 30px;
+    padding:8px 0px;
+    clear:both;
+}
+
+.chat-room .chat-content .message-empty{
+    position:absolute;
+    top:40%;
+    left:47%;
+    color:#999;
+}
+
+.chat-room .chat-content .message-content .avatar{
+    float:left;
+}
+
+.chat-room .chat-content .message-content .avatar-right{
+    float:right;
+}
+
+.chat-room .chat-content .message-content img{
+    width:50px;
+    border-radius:25px;
+    -webkit-border-radius:25px;
+    -moz-border-radius:25px;
+    border:1px solid #c9c9ce;
+}
+
+.chat-room .chat-content .message-content .message{
+    border:1px solid #c9c9ce;
+    word-wrap:break-word;
+    float:left;
+    background-color:#fff;
+    padding:10px;
+    /*width:75%;*/
+    color:#3d4e46;
+    max-width:330px;
+    min-height:40px;
+    margin-left:20px;
+    margin-right:5px;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    position:relative;
+}
+
+.chat-room .chat-content .message-content .message-left{
+    float:right;
+    background-color:#127ff9;
+    word-wrap:break-word;
+    padding:10px;
+    /*width:75%;*/
+    color:#fff;
+    max-width:330px;
+    min-height:40px;
+    margin-left:5px;
+    margin-right:20px;
+    -webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;
+    position:relative;
+}
+
+.chat-room .chat-content .message-content .message:before{
+    position:absolute;
+    content:"\00a0";
+    width:0px;
+    height:0px;
+    border-width:5px 15px 5px 0;
+    border-style:solid;
+    border-color:transparent #fff transparent transparent;
+    top:15px;
+    left:-15px;
+}
+
+.chat-room .chat-content .message-content .message-left:before{
+    position:absolute;
+    content:"\00a0";
+    display:inline-block;
+    width:0px;
+    height:0px;
+    border-width:5px 0px 5px 15px;
+    border-style:solid;
+    border-color:transparent transparent transparent #127ff9;
+    right:-15px;
+    top:15px;
+}
+
+.chat-room .chat-content .message-content .time{
+    font-size:8px;
+    text-align:center;
+}
+
+.chat-room .chat-area #tool-bar{
+    border-top:1px solid #cccccc;
+    width:100%;
+    height:30px;
+    line-height:30px;
+}
+
+.chat-room .chat-area #tool-bar #disease-knowledge{
+    float:left;
+    margin-top:5px;
+    margin-left:10px;
+    width:25px;
+    background:url("../images/chat_input_icons.png") no-repeat 0px 0px;
+    -moz-background-size:300% 100%;
+    background-size:300% 100%;
+    cursor:pointer;
+}
+
+.chat-room .chat-area #tool-bar #questionnaires{
+    float:left;
+    margin-top:5px;
+    margin-left:15px;
+    width:25px;
+    background:url("../images/chat_input_icons.png") no-repeat -25px 0px;
+    -moz-background-size:300% 100%;
+    background-size:300% 100%;
+    cursor:pointer;
+}
+
+.chat-room .chat-area #tool-bar #referral-reminder{
+    float:left;
+    margin-top:5px;
+    margin-left:15px;
+    width:25px;
+    background:url("../images/chat_input_icons.png") no-repeat -50px 0px;
+    -moz-background-size:300% 100%;
+    background-size:300% 100%;
+    cursor:pointer;
+}
+
+.chat-room .chat-area #edit-area{
+    clear:both;
+    text-align:left;
+    height:90px;
+}
+
+.chat-room .chat-area #edit-area pre{
+    height:90px;
+    background:#ddd;
+    border:none;
+    white-space: pre-wrap;
+    /*word-break: initial;*/
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+
+.chat-room .chat-area .action{
+    margin-top:5px;
+    text-align:right;
+}
+
+.chat-room .chat-area .action .desc{
+    font-size:12px;
+    margin-right:10px;
+}
+
+.chat-room .chat-area .action a{
+    width: 90px;
+    color:#000;
+    background:#fff;
+    border:1px solid #999;
+    border-radius:15px;
+    -webkit-border-radius:15px;
+    -moz-border-radius:15px;
+    padding-right:10px;
+}

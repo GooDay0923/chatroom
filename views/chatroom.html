@@ -1,0 +1,176 @@
+<div class="row" ng-controller="chatRoomCtrl" >
+    <div class="col-md-3">
+        <div class="panel">
+
+            <div class="panel-heading">
+                <div id="search_bar" class="search_bar">
+                    &nbsp;
+                    <img src="/images/search_icon.png" />
+                    <input type="text" placeholder="search" />
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="list-container">
+                    <div class="list" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false}">
+
+                        <div class="chat-list-empty" ng-if="chatUserList.length < 1">
+                            loading online user, please wait....
+                        </div>
+
+                        <!--<chatlist user="chatUser" ng-repeat="chatUser in chatUserList track by chatUser.nickname"  ></chatlist>-->
+
+                        <div ng-repeat="chatUser in chatUserList track by chatUser.nickname" class="col-md-12 chat-item" ng-class="{'active' : (chatUser.nickname == currentUserName)}" data-cm='{"type":"chat","username":"{{chatUser.nickname}}"}' ng-click="itemClick(chatUser.nickname)">
+                            <div class="avatar">
+                                <img src="images/photo_default.jpg" title="{{chatUser.nickname}}" />
+                                <div class="red-point" ng-if="chatUser.noticeCount"></div>
+                            </div>
+
+                            <div class="info">
+                                <span class="nickname" ng-bind="chatUser.nickname"></span>
+                                <p class="msg" ng-if="chatUser.MMDigest">
+                                    <span ng-if="chatUser.noticeCount > 0">[{{chatUser.noticeCount}} news]</span>
+                                    <span ng-bind-html="chatUser.MMDigest | trust"></span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="chat-room col-md-9">
+
+        <div class="chat-title">
+            <div class="row">
+                <div ng-show="currentContact.getDisplayName()" ng-cloak>
+
+                    <div class="col-md-12">
+                        <span class="display-name" ng-bind="currentContact.displayName"></span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="chat-content" contextmenu options="menuOptions" menu-list="lists" click-menu="clickMenu(item)" align="rt">
+            <div class="list-container">
+                <div class="list" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false, autoResize: true, dragSpeed: 1.2}">
+
+                    <div class="message-empty" ng-if="messages.length < 1">
+                        <div ng-hide="currentContact.getDisplayName()">Chat is not selected</div>
+                        <div ng-show="currentContact.getDisplayName()">No news</div>
+                    </div>
+
+                    <message self="username" scrolltothis="scrollToBottom()" info="message" ng-repeat="message in messages"></message>
+
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="currentContact.getDisplayName()" class="chat-area">
+            <div id="tool-bar">
+
+                <div id="disease-knowledge">&nbsp;</div>
+                <div id="questionnaires">&nbsp;</div>
+                <div id="referral-reminder">&nbsp;</div>
+
+                <!--<div style="float:right;">-->
+                <!--<button>消息记录</button>-->
+                <!--</div>-->
+            </div>
+            <div id="edit-area">
+                <pre contenteditable="true" ng-keydown="editAreaKeydown($event)" ng-keyup="editAreaKeyup($event)" ng-click="editAreaClick()" ng-model="editAreaCtn" ng-blur="editAreaBlur($event)" contenteditabledirective></pre>
+            </div>
+            <div class="action">
+                <span ng-if="!isMacOS" class="desc">按下Ctrl+Enter发送</span>
+                <span ng-if="isMacOS" class="desc">按下Cmd+Enter发送</span>
+                <a class="btn btn_send" ng-click="sendTextMessage()" href="javascript:;">发送</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div style="position:absolute;top:0;left:0;width:0;height:0;">
+    <audio id="voiceMsgPlayer" class="voicePlayer"></audio>
+    <audio id="msgNoticePlayer" class="voicePlayer" style="width: 0px; height: 0px;">
+        <img id="jp_poster_0" style="width: 0px; height: 0px; display: none;">
+        <audio id="jp_audio_0" preload="metadata" src="sound/msg.mp3"></audio>
+    </audio>
+</div>
+
+<script id="message.html" type="text/ng-template">
+    <div class="message-content">
+        <div ng-class="{'avatar':self !== info.from, 'avatar-right':self === info.from}">
+            <img title="{{info.from}}" src="images/photo_default.jpg" />
+        </div>
+        <div ng-class="{'message':self !== info.from, 'message-left':self === info.from}" ng-bind-html="info.content | trust">
+            <div class="time">{{info.time | date: 'HH:mm:ss' }}</div>
+        </div>
+    </div>
+</script>
+
+<script id="chat-user-list.html" type="text/ng-template">
+    <div class="chat-item" ng-class="{'active' : (user.nickname == currentUserName)}" ng-click="itemClick(user.nickname)" data-cm='{"type":"chat","username":"{{user.nickname}}"}'>
+        <div class="avatar">
+            <img src="images/photo_default.jpg" title="user.nickname" />
+            <div class="red-point" ng-if="chatUserList.length > 1"></div>
+        </div>
+
+        <div class="info">
+            <span class="nickname">{{user.nickname}}</span>
+            <p class="msg"></p>
+        </div>
+    </div>
+</script>
+
+<script id="expression.html" type="text/ng-template">
+
+</script>
+
+<script id="preview.html" type="text/ng-template">
+<div class="mask preview_mask" ></div>
+<div class="img_preview_container" id="preview_container" ng-class="{loading: !isLoaded}" ng-style="containerStyle">
+    <div class="img_container" id="img_container">
+        <div class="img_wrp" id="img_dom" >
+            <!-- webkit 的 transform 有导致不 reflow 的bug，强行改变其子元素来强制reflow-->
+            <span ng-if="reflowFlag"></span>
+            <img class="rotate{{rotateDeg}}" ng-show="isLoaded" id="img_preview" />
+            <a href="javascript:" ng-click="actions.close();" class="img_preview_close" title="关闭"><i class="web_wechat_close-window"></i></a>
+        </div>
+    </div>
+    <div class="img_opr_container" id="img_opr_container">
+        <ul class="img_opr_list">
+            <li class="img_opr_item">
+                <a ng-click="actions.prev()" href="javascript:" title="查看上一个">
+                    <i class="web_wechat_left" ng-class="{'web_wechat_left_disable': current <= 0}"></i>&nbsp;
+                </a>
+            </li>
+            <li class="img_opr_item">
+                <a download href="{{imageList[current].url + '&fun=download'}}" title="下载图片">
+                    <i class="web_wechat_download"></i>&nbsp;
+                </a>
+            </li>
+            <li class="img_opr_item" ng-hide="isIE">
+                <a ng-click="actions.rotate()" href="javascript:" title="旋转图片">
+                    <i class="web_wechat_turn"></i>&nbsp;
+                </a>
+            </li>
+            <li class="img_opr_item">
+                <a ng-click="actions.next()" href="javascript:" title="查看下一个">
+                    <i class="web_wechat_right" ng-class="{'web_wechat_right_disable': current >= imageList.length - 1}"></i>&nbsp;
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</script>
+
