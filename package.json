@@ -1,0 +1,23 @@
+{
+  "name": "chatroom",
+  "version": "1.0.0",
+  "description": "this is a chatroom with mean frame",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GooDay0923/chatroom.git"
+  },
+  "keywords": [
+    "mean-chatroom"
+  ],
+  "author": "YuHengHuang -- GooDay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GooDay0923/chatroom/issues"
+  },
+  "homepage": "https://github.com/GooDay0923/chatroom"
+}
