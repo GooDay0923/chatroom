@@ -61,6 +61,8 @@ exports.logout = function(req, res){
 
     User.update({username : req.body.username}, {$set: { online : false }}).exec();
 
+
+
     return res.json({msg : 'success'});
 
 };

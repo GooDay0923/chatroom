@@ -152,4 +152,16 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
 
     });
 
+    SocketService.on('userAddingResult', function(data){
+        $scope.chatUserList[data.username] = {};
+        $scope.chatUserList[data.username].nickname = data.username;
+        $scope.chatUserList[data.username].MMDigest = "";
+        $scope.chatUserList[data.username].noticeCount = 0;
+    });
+
+    SocketService.on('userLogout', function(data) {
+       console.log(data);
+       delete $scope.chatUserList[data.username];
+    });
+
 });

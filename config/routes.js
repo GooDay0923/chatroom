@@ -12,7 +12,7 @@ module.exports = function(app) {
 
     app.post('/user/register', userController.register);
     app.post('/user/login', userController.login);
-    app.get('/user/logout', userController.logout);
+    app.post('/user/logout', userController.logout);
     app.post('/user/onlineUserList', userController.findAllOnline);
 
     ///**

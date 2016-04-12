@@ -22,9 +22,10 @@ AuthModule.factory('AuthService', function($http, $q, $window, $location){
             return deferred.promise;
         },
 
-        logout : function(){
+        logout : function(username){
+            var logoutUrl = "/user/logout";
             $window.sessionStorage.clear();
-
+            $http.post(logoutUrl, {username : username});
             $location.path("/");
         },
 

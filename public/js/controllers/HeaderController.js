@@ -10,11 +10,11 @@ HeaderModule.controller("headerCtrl", function($rootScope, $scope, $location, Au
         $rootScope.username = user.username;
         SocketService.emit("addUser", {username: $rootScope.username});
     } else {
-        AuthService.logout();
+        AuthService.logout("null");
     }
 
     $scope.logout = function(){
-        AuthService.logout();
+        AuthService.logout($rootScope.username);
     }
 
 });
