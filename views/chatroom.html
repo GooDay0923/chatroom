@@ -20,12 +20,11 @@
 
                         <!--<chatlist user="chatUser" ng-repeat="chatUser in chatUserList track by chatUser.nickname"  ></chatlist>-->
 
-                        <div ng-repeat="chatUser in chatUserList track by chatUser.nickname" class="col-md-12 chat-item" ng-class="{'active' : (chatUser.nickname == currentUserName)}" data-cm='{"type":"chat","username":"{{chatUser.nickname}}"}' ng-click="itemClick(chatUser.nickname)">
+                        <div ng-repeat="chatUser in chatUserList track by $index" class="col-md-12 chat-item" ng-class="{'active' : (chatUser.nickname == currentUserName)}" data-cm='{"type":"chat","username":"{{chatUser.nickname}}"}' ng-click="itemClick(chatUser.nickname)">
                             <div class="avatar">
                                 <img src="images/photo_default.jpg" title="{{chatUser.nickname}}" />
                                 <div class="red-point" ng-if="chatUser.noticeCount"></div>
                             </div>
-
                             <div class="info">
                                 <span class="nickname" ng-bind="chatUser.nickname"></span>
                                 <p class="msg" ng-if="chatUser.MMDigest">
@@ -112,65 +111,10 @@
         <div ng-class="{'avatar':self !== info.from, 'avatar-right':self === info.from}">
             <img title="{{info.from}}" src="images/photo_default.jpg" />
         </div>
+
         <div ng-class="{'message':self !== info.from, 'message-left':self === info.from}" ng-bind-html="info.content | trust">
             <div class="time">{{info.time | date: 'HH:mm:ss' }}</div>
+            {{info.time}}
         </div>
     </div>
 </script>
-
-<script id="chat-user-list.html" type="text/ng-template">
-    <div class="chat-item" ng-class="{'active' : (user.nickname == currentUserName)}" ng-click="itemClick(user.nickname)" data-cm='{"type":"chat","username":"{{user.nickname}}"}'>
-        <div class="avatar">
-            <img src="images/photo_default.jpg" title="user.nickname" />
-            <div class="red-point" ng-if="chatUserList.length > 1"></div>
-        </div>
-
-        <div class="info">
-            <span class="nickname">{{user.nickname}}</span>
-            <p class="msg"></p>
-        </div>
-    </div>
-</script>
-
-<script id="expression.html" type="text/ng-template">
-
-</script>
-
-<script id="preview.html" type="text/ng-template">
-<div class="mask preview_mask" ></div>
-<div class="img_preview_container" id="preview_container" ng-class="{loading: !isLoaded}" ng-style="containerStyle">
-    <div class="img_container" id="img_container">
-        <div class="img_wrp" id="img_dom" >
-            <!-- webkit 的 transform 有导致不 reflow 的bug，强行改变其子元素来强制reflow-->
-            <span ng-if="reflowFlag"></span>
-            <img class="rotate{{rotateDeg}}" ng-show="isLoaded" id="img_preview" />
-            <a href="javascript:" ng-click="actions.close();" class="img_preview_close" title="关闭"><i class="web_wechat_close-window"></i></a>
-        </div>
-    </div>
-    <div class="img_opr_container" id="img_opr_container">
-        <ul class="img_opr_list">
-            <li class="img_opr_item">
-                <a ng-click="actions.prev()" href="javascript:" title="查看上一个">
-                    <i class="web_wechat_left" ng-class="{'web_wechat_left_disable': current <= 0}"></i>&nbsp;
-                </a>
-            </li>
-            <li class="img_opr_item">
-                <a download href="{{imageList[current].url + '&fun=download'}}" title="下载图片">
-                    <i class="web_wechat_download"></i>&nbsp;
-                </a>
-            </li>
-            <li class="img_opr_item" ng-hide="isIE">
-                <a ng-click="actions.rotate()" href="javascript:" title="旋转图片">
-                    <i class="web_wechat_turn"></i>&nbsp;
-                </a>
-            </li>
-            <li class="img_opr_item">
-                <a ng-click="actions.next()" href="javascript:" title="查看下一个">
-                    <i class="web_wechat_right" ng-class="{'web_wechat_right_disable': current >= imageList.length - 1}"></i>&nbsp;
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-</script>
-

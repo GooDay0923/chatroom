@@ -62,11 +62,6 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
                 return false;
             }
         },
-        //setDisplayName : function(username, doctorName) {
-        //    $scope.currentContact.displayName = username;
-        //    $scope.currentContact.doctorName = doctorName;
-        //    $scope.currentUserName = username;
-        //},
         setDisplayName : function(username) {
             $scope.currentContact.displayName = username;
             $scope.currentUserName = username;
@@ -78,9 +73,8 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
     }
 
     $scope.itemClick = function(username){
-        //$scope.currentContact.setDisplayName(username, '王精明');
         $scope.currentContact.setDisplayName(username);
-        $scope.chatUserList[username].noticeCount = 0
+        $scope.chatUserList[username].noticeCount = 0;
         if(typeof($scope.chatContent[username]) != "undefined"){
             $scope.messages = $scope.chatContent[username];
         } else {
