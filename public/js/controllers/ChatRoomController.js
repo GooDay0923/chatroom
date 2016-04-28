@@ -3,11 +3,12 @@
  */
 
 var ChatRoomModule = angular.module("ChatRoomModule", ['ngContextMenu']);
-ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, UserService, SocketService){
+ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, UserService, SocketService){
 
     $scope.editAreaCtn = "";
     $scope.currentUserName = "";
-    $scope.chatUserList = {}; //user chat List
+    $scope.currentNickName = "";
+    $scope.chatUserList = []; //user chat List
     $scope.chatContent = {}; //message Object
     $scope.messages = "";
     $scope.receiver = "";
@@ -25,12 +26,16 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
     UserService.getAllOnlineUser()
         .then(function(data){
             if(data.msg == "success"){
-                //$scope.chatUserList = data.userList;
-                for(var user in data.userList){
-                    var nickname = data.userList[user].nickname;
-                    $scope.chatUserList[nickname] = data.userList[user];
-                    $scope.chatUserList[nickname].MMDigest = "";
-                    $scope.chatUserList[nickname].noticeCount = 0;
+                var tmpTime = Date.parse(new Date) / 1000;
+                var dataList = data.userList;
+                for(var user in dataList){
+                    dataList[user].MMDigest = "";
+                    dataList[user].noticeCount = 0;
+
+                    tmpTime += 1;
+                    dataList[user].time = tmpTime;
+
+                    $scope.chatUserList.push(dataList[user]);
                 }
             }
         })
@@ -54,7 +59,6 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
 
     $scope.currentContact = {
         displayName : "",
-        //doctorName : "",
         getDisplayName : function(){
             if($scope.currentContact.displayName){
                 return true;
@@ -62,9 +66,9 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
                 return false;
             }
         },
-        setDisplayName : function(username) {
-            $scope.currentContact.displayName = username;
-            $scope.currentUserName = username;
+        setDisplayName : function(nickname) {
+            $scope.currentNickName = nickname;
+            $scope.currentContact.displayName = nickname;
         }
     };
 
@@ -72,9 +76,13 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
 
     }
 
-    $scope.itemClick = function(username){
-        $scope.currentContact.setDisplayName(username);
-        $scope.chatUserList[username].noticeCount = 0;
+    $scope.itemClick = function(username, nickname){
+        $scope.currentUserName = username;
+        $scope.currentContact.setDisplayName(nickname);
+
+        var currentChatUserList = $filter('findObject')($scope.chatUserList, username);
+
+        currentChatUserList.noticeCount = 0;
         if(typeof($scope.chatContent[username]) != "undefined"){
             $scope.messages = $scope.chatContent[username];
         } else {
@@ -121,7 +129,10 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
 
             if(rec !== $rootScope.username) { //except send to myself
                 SocketService.emit("sendMessage", msg);
-                $scope.chatUserList[rec].MMDigest = $scope.editAreaCtn;
+
+                var currentChatUserList = $filter('findObject')($scope.chatUserList, rec);
+                currentChatUserList.MMDigest = $scope.editAreaCtn;
+                currentChatUserList.time = Date.parse(new Date) / 1000;
                 $scope.editAreaCtn = "";
             }
         }
@@ -138,24 +149,37 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $sce, Use
         }
 
         $scope.chatContent[data.from].push(data);
-        $scope.chatUserList[data.from].MMDigest = data.content;
+        var currentChatUserList = $filter('findObject')($scope.chatUserList, data.from);
+        currentChatUserList.MMDigest = data.content;
+        currentChatUserList.time = Date.parse(new Date) / 1000;
 
         if($scope.currentUserName != data.from){
-            $scope.chatUserList[data.from].noticeCount += 1;
+            currentChatUserList.noticeCount++;
         }
 
     });
 
+
     SocketService.on('userAddingResult', function(data){
-        $scope.chatUserList[data.username] = {};
-        $scope.chatUserList[data.username].nickname = data.username;
-        $scope.chatUserList[data.username].MMDigest = "";
-        $scope.chatUserList[data.username].noticeCount = 0;
+        var chatUser = [];
+        chatUser.username = data.username;
+        chatUser.nickname = data.nickname;
+        chatUser.MMDigest = "";
+        chatUser.noticeCount = 0;
+        chatUser.time = Date.parse(new Date) / 1000;
+
+        $scope.chatUserList.push(chatUser);
+
     });
 
     SocketService.on('userLogout', function(data) {
-       console.log(data);
-       delete $scope.chatUserList[data.username];
+
+        for(var i in $scope.chatUserList){
+            if( $scope.chatUserList[i].username == data.username){
+                $scope.chatUserList.splice(i, 1);
+                break;
+            }
+        }
     });
 
 });

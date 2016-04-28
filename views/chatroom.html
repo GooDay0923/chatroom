@@ -6,7 +6,7 @@
                 <div id="search_bar" class="search_bar">
                     &nbsp;
                     <img src="/images/search_icon.png" />
-                    <input type="text" placeholder="search" />
+                    <input type="text" placeholder="search" ng-model="nickname"/>
                 </div>
             </div>
 
@@ -15,12 +15,15 @@
                     <div class="list" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false}">
 
                         <div class="chat-list-empty" ng-if="chatUserList.length < 1">
-                            loading online user, please wait....
+                            <!--loading online user-->
+                            <!--<br />-->
+                            <!--please wait....-->
+                            no online user
                         </div>
 
                         <!--<chatlist user="chatUser" ng-repeat="chatUser in chatUserList track by chatUser.nickname"  ></chatlist>-->
 
-                        <div ng-repeat="chatUser in chatUserList track by $index" class="col-md-12 chat-item" ng-class="{'active' : (chatUser.nickname == currentUserName)}" data-cm='{"type":"chat","username":"{{chatUser.nickname}}"}' ng-click="itemClick(chatUser.nickname)">
+                        <div ng-repeat="chatUser in chatUserList | filter:nickname | orderBy:'-time'" class="col-md-12 chat-item" ng-class="{'active' : (chatUser.nickname == currentNickName)}" ng-click="itemClick(chatUser.username, chatUser.nickname)">
                             <div class="avatar">
                                 <img src="images/photo_default.jpg" title="{{chatUser.nickname}}" />
                                 <div class="red-point" ng-if="chatUser.noticeCount"></div>

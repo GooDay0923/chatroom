@@ -51,17 +51,8 @@ exports.login = function(req, res){
 exports.logout = function(req, res){
 
     console.log("start logout request");
-    //console.log(req.session.user);
-
-    //User.update({_id : req.session.user._id}, {$set: { online : false }}).exec();
-    //
-    //req.session.user = "";
-    //
-    //console.log("current session user:" + req.session.user);
 
     User.update({username : req.body.username}, {$set: { online : false }}).exec();
-
-
 
     return res.json({msg : 'success'});
 

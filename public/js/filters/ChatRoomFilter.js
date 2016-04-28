@@ -6,4 +6,19 @@ ChatRoomModule.filter('trust', function ($sce) {
         return $sce.trustAsHtml(text);
     }
 
+}).filter('findObject', function () {
+    return function (array, username) {
+        for(var i in array){
+            if( array[i].username == username){
+                return array[i];
+            }
+        }
+        //angular.forEach(array, function(value, key){
+        //    if(value.toUId == toUId){
+        //        console.log(value);
+        //        return value;
+        //    }
+        //})
+
+    }
 });
