@@ -17,16 +17,18 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
     //could use it to judge system os
     //console.log(window.navigator);
 
-    var messageWrapper = $(".list");
+    var messageWrapper = $(".chat-content .list");
     $scope.scrollToBottom=function() {
         messageWrapper.scrollTop(messageWrapper[0].scrollHeight);
     }
+
+    var chatListWrapper = $(".panel-body .list .ngscroll-content-container");
 
     //get user list
     UserService.getAllOnlineUser()
         .then(function(data){
             if(data.msg == "success"){
-                var tmpTime = Date.parse(new Date) / 1000;
+                var tmpTime = (Date.parse(new Date) / 1000) - 1000;
                 var dataList = data.userList;
                 for(var user in dataList){
                     dataList[user].MMDigest = "";
@@ -134,6 +136,8 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
                 currentChatUserList.MMDigest = $scope.editAreaCtn;
                 currentChatUserList.time = Date.parse(new Date) / 1000;
                 $scope.editAreaCtn = "";
+
+                chatListWrapper.css("margin-top", "0");
             }
         }
     }
@@ -152,6 +156,7 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
         var currentChatUserList = $filter('findObject')($scope.chatUserList, data.from);
         currentChatUserList.MMDigest = data.content;
         currentChatUserList.time = Date.parse(new Date) / 1000;
+        chatListWrapper.css("margin-top", "0");
 
         if($scope.currentUserName != data.from){
             currentChatUserList.noticeCount++;
