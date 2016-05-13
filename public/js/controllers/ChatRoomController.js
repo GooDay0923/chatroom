@@ -36,6 +36,7 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
 
                     tmpTime += 1;
                     dataList[user].time = tmpTime;
+                    dataList[user].lastTime = 0;
 
                     $scope.chatUserList.push(dataList[user]);
                 }
@@ -120,23 +121,30 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
         if($scope.editAreaCtn.replace(/(^\s*)|(\s*$)/g, "")){
             var rec = $scope.currentUserName;
 
-            var msg = {content : $scope.editAreaCtn, from : $rootScope.username, to : $scope.currentUserName, time : new Date()};
+            var currentChatUserList = $filter('findObject')($scope.chatUserList, rec);
+            var time = 0;
+            var currentTime = Date.parse(new Date);
+            if(currentTime - currentChatUserList.lastTime > 60000){
+                time = currentTime;
+                currentChatUserList.lastTime = currentTime;
+            }
+
+            var msg = {content : $scope.editAreaCtn, from : $rootScope.username, to : $scope.currentUserName, time : time};
 
             if(!$scope.chatContent[rec]){
                 $scope.chatContent[rec]=[];
             }
 
             $scope.chatContent[rec].push(msg);
-            $scope.messages = $scope.chatContent[rec];
+
 
             if(rec !== $rootScope.username) { //except send to myself
                 SocketService.emit("sendMessage", msg);
 
-                var currentChatUserList = $filter('findObject')($scope.chatUserList, rec);
                 currentChatUserList.MMDigest = $scope.editAreaCtn;
                 currentChatUserList.time = Date.parse(new Date) / 1000;
                 $scope.editAreaCtn = "";
-
+                $scope.messages = $scope.chatContent[rec];
                 chatListWrapper.css("margin-top", "0");
             }
         }
@@ -146,6 +154,8 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
     //recept the new message
     SocketService.on('messageAdded', function(data) {
 
+        console.log(data.time);
+
         document.getElementById("jp_audio_0").play();
 
         if(!$scope.chatContent[data.from]){
@@ -153,13 +163,25 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
         }
 
         $scope.chatContent[data.from].push(data);
+
+
         var currentChatUserList = $filter('findObject')($scope.chatUserList, data.from);
+        console.log(currentChatUserList);
+        if(currentChatUserList.lastTime == 0){
+            currentChatUserList.lastTime = data.time;
+        }
+
+        console.log(currentChatUserList.lastTime);
+
         currentChatUserList.MMDigest = data.content;
         currentChatUserList.time = Date.parse(new Date) / 1000;
+
         chatListWrapper.css("margin-top", "0");
 
         if($scope.currentUserName != data.from){
             currentChatUserList.noticeCount++;
+        } else {
+            $scope.messages = $scope.chatContent[data.from];
         }
 
     });
@@ -172,6 +194,7 @@ ChatRoomModule.controller("chatRoomCtrl", function($rootScope, $scope, $filter, 
         chatUser.MMDigest = "";
         chatUser.noticeCount = 0;
         chatUser.time = Date.parse(new Date) / 1000;
+        chatUser.lastTime = 0;
 
         $scope.chatUserList.push(chatUser);
 

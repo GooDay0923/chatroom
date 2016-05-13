@@ -183,6 +183,19 @@
     clear:both;
 }
 
+.chat-room .chat-content .message-content .time-area{
+    text-align:center;
+    font-size:14px;
+    color:#666;
+    margin-bottom:5px;
+}
+
+.chat-room .chat-content .message-content .time-area .time{
+    background:#999;
+    padding:5px;
+    border-radius:10%;
+}
+
 .chat-room .chat-content .message-empty{
     position:absolute;
     top:40%;
@@ -262,11 +275,6 @@
     border-color:transparent transparent transparent #127ff9;
     right:-15px;
     top:15px;
-}
-
-.chat-room .chat-content .message-content .time{
-    font-size:8px;
-    text-align:center;
 }
 
 .chat-room .chat-area #tool-bar{
