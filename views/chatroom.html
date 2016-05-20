@@ -111,11 +111,12 @@
 
 <script id="message.html" type="text/ng-template">
 
-    <div class="message-content">
-        <div class="time-area" ng-if="info.time > 0">
-            <span class="time">{{info.time | date: 'HH:mm' }}</span>
-        </div>
+    <br />
+    <div class="time-area" ng-if="info.time > 0">
+        <span class="time">{{info.time | date: 'HH:mm' }}</span>
+    </div>
 
+    <div class="message-content">
         <div ng-class="{'avatar':self !== info.from, 'avatar-right':self === info.from}">
             <img title="{{info.from}}" src="images/photo_default.jpg" />
         </div>
